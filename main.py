@@ -22,19 +22,19 @@ builder.add_node("search_tavily",search_tavily)
 builder.add_node("search_duck_duck_go",search_duck_duck_go)
 builder.add_node("search_wikipedia", search_wikipedia)
 builder.add_node("search_arxiv", search_arxiv)
-builder.add_node("generate_answer", generate_answer)
+builder.add_node("generate_summary", generate_summary)
 
 builder.add_edge(START, "search_wikipedia")
 builder.add_edge(START, "search_tavily")
 builder.add_edge(START, "search_duck_duck_go")
 builder.add_edge(START, "search_arxiv")
 
-builder.add_edge("search_wikipedia", "generate_answer")
-builder.add_edge("search_duck_duck_go", "generate_answer")
-builder.add_edge("search_tavily", "generate_answer")
-builder.add_edge("search_arxiv", "generate_answer")
+builder.add_edge("search_wikipedia", "generate_summary")
+builder.add_edge("search_duck_duck_go", "generate_summary")
+builder.add_edge("search_tavily", "generate_summary")
+builder.add_edge("search_arxiv", "generate_summary")
 
-builder.add_edge("generate_answer", END)
+builder.add_edge("generate_summary", END)
 
 graph = builder.compile()
 
