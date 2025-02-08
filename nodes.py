@@ -112,6 +112,15 @@ def generate_summary(state):
     return {"pre_answers": answer_text}
 
 def final_answer(state):
+    """
+    Use the pre_answers to generate a final and unified answer to the question.
+
+    Args:
+        state (dict): The current state of the graph.
+
+    Returns:
+        dict: A dictionary with a single key "final_output" which contains the generated final answer.
+    """
     llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0) 
     pre_answers = state['pre_answers']
     question = state['question'][0]
