@@ -4,11 +4,13 @@ from typing import Annotated
 from langgraph.graph import StateGraph, START, END
 from nodes import *
 from dotenv import load_dotenv
+from langchain_ollama import ChatOllama
 
 
 load_dotenv()
 
-llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0) 
+llm = ChatOllama(model="qwen2:0.5b", temperature=0) 
+
 
 class State(TypedDict):
     question: Annotated[list, operator.add]
