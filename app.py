@@ -9,8 +9,6 @@ from langchain_ollama import ChatOllama
 
 load_dotenv()
 
-llm = ChatOllama(model="qwen2:0.5b", temperature=0) 
-
 
 class State(TypedDict):
     question: Annotated[list, operator.add]
@@ -65,5 +63,6 @@ with open("research_project_graph.png", "wb") as f:
     f.write(png_bytes)
     
 
-
-print(graph.invoke({"question":["Explain me what's a linear regression and add the formula"]})['final_output'].content)
+while True:
+    question = input("Enter your question: ")
+    print(graph.invoke({"question":[question]})['final_output'].content)

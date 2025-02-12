@@ -2,6 +2,7 @@ from langchain_community.document_loaders import WikipediaLoader
 from langchain_community.tools import TavilySearchResults
 from langchain_community.tools import DuckDuckGoSearchRun
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_community.retrievers import ArxivRetriever
 
 def search_arxiv(state):
@@ -119,7 +120,7 @@ def final_answer(state):
     Returns:
         dict: A dictionary with a single key "final_output" which contains the generated final answer.
     """
-    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0) 
+    llm = ChatOpenAI(model="gpt-3.5-turbo-1106", temperature=0)
     pre_answers = state['pre_answers']
     question = state['question'][0]
     answer_template = """Write a final and unified answer to the question {question} following this pre-answers {pre_answers}"""
