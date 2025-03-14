@@ -23,6 +23,14 @@ class State(TypedDict):
     final_output: str
 
 
+builder_arxiv = StateGraph(State)
+builder_arxiv.add_node("search_arxiv",search_arxiv)
+builder_arxiv.add_node("generate_summary",generate_summary)
+builder_arxiv.add_edge(START, "search_arxiv")
+builder_arxiv.add_edge("search_arxiv", "generate_summary")
+builder_arxiv.add_edge("generate_summary", END)
+subgraph_arxiv = builder_arxiv.compile()
+
 
 builder_tavily = StateGraph(State)
 builder_tavily.add_node("search_tavily",search_tavily)
@@ -60,10 +68,15 @@ entry_builder = StateGraph(State)
 entry_builder.add_node("Tavily", subgraph_tavily)
 entry_builder.add_node("Duck Duck Go", subgraph_builder_duck_duck_go)
 entry_builder.add_node("Wikipedia", subgraph_builder_wikipedia)
+entry_builder.add_node("Arxiv", subgraph_arxiv)
 entry_builder.add_node("builder_final_answer", builder_final_answer)
+
 entry_builder.add_edge(START, "Tavily")
 entry_builder.add_edge(START, "Duck Duck Go")
 entry_builder.add_edge(START, "Wikipedia")
+entry_builder.add_edge(START, "Arxiv")
+
+entry_builder.add_edge("Arxiv", "builder_final_answer")
 entry_builder.add_edge("Tavily", "builder_final_answer")
 entry_builder.add_edge("Duck Duck Go", "builder_final_answer")
 entry_builder.add_edge("Wikipedia", "builder_final_answer")
@@ -93,7 +106,7 @@ while True:
         "final_output": final_state.get("final_output"),
     }
     
-    selected_db_service.insert_document(final_document)
+    #selected_db_service.insert_document(final_document)
     
     print("Final Output:", final_document["final_output"])
 

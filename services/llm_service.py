@@ -18,11 +18,13 @@ def search_arxiv(state):
     Returns:
         dict: A dictionary containing the key 'context' with the retrieved documents.
     """
-
-    retriever = ArxivRetriever(load_max_docs=2, get_ful_documents=True)
-    docs = retriever.invoke(state['question'][0])
-    result = {"context": [docs]}
-    return result
+    try:
+        retriever = ArxivRetriever(load_max_docs=2, get_ful_documents=True)
+        docs = retriever.invoke(state['question'][0])
+        result = {"context": [docs.page_content]}
+        return result
+    except:
+        return {"context": []}
 
 def read_question(state):
     """
@@ -49,13 +51,16 @@ def search_tavily(state):
     Returns:
         dict: A dictionary containing the key 'context' with the search results.
     """
-    tavily_search = TavilySearchResults(max_results=3)
-    search_docs = tavily_search.invoke(state['question'][0])
-    formatted_search_docs = "\n\n---\n\n".join(
-        [f'<Document href="{doc["url"]}">\n{doc["content"]}\n</Document>' for doc in search_docs]
-    )
-    result = {"context": [formatted_search_docs]}
-    return result
+    try:
+        tavily_search = TavilySearchResults(max_results=3)
+        search_docs = tavily_search.invoke(state['question'][0])
+        formatted_search_docs = "\n\n---\n\n".join(
+            [f'<Document href="{doc["url"]}">\n{doc["content"]}\n</Document>' for doc in search_docs]
+        )
+        result = {"context": [formatted_search_docs]}
+        return result
+    except:
+        return {"context": []}
 
 def search_wikipedia(state):
     """
@@ -69,13 +74,15 @@ def search_wikipedia(state):
         dict: A dictionary containing the key 'context' with a list of two strings, 
               where each string contains the content of each search result.
     """
-    
-    search_docs = WikipediaLoader(query=state['question'][0], load_max_docs=2).load()
-    formatted_search_docs = "\n\n---\n\n".join(
-        [f'<Document source="{doc.metadata["source"]}" page="{doc.metadata.get("page", "")}">\n{doc.page_content}\n</Document>' for doc in search_docs]
-    )
-    result = {"context": [formatted_search_docs]}
-    return result
+    try:
+        search_docs = WikipediaLoader(query=state['question'][0], load_max_docs=2).load()
+        formatted_search_docs = "\n\n---\n\n".join(
+            [f'<Document source="{doc.metadata["source"]}" page="{doc.metadata.get("page", "")}">\n{doc.page_content}\n</Document>' for doc in search_docs]
+        )
+        result = {"context": [formatted_search_docs]}
+        return result
+    except:
+        return {"context": []}
 
 def search_duck_duck_go(state):
     """
@@ -88,11 +95,13 @@ def search_duck_duck_go(state):
     Returns:
         dict: A dictionary containing the key 'context' with the search results.
     """
-
-    search = DuckDuckGoSearchRun()
-    search_docs = search.invoke(state['question'][0])
-    result = {"context": [search_docs]}
-    return result
+    try:
+        search = DuckDuckGoSearchRun()
+        search_docs = search.invoke(state['question'][0])
+        result = {"context": [search_docs]}
+        return result
+    except:
+        return {"context": []}
 
 def generate_summary(state):
     """
