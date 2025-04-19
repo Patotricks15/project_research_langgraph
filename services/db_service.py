@@ -28,7 +28,7 @@ class MongoDBService:
             db (Database): The MongoDB database instance.
             collection (Collection): The MongoDB collection instance.
         """
-        mongo_uri = os.getenv("MONGO_URI", "mongodb://mongo:27017/")
+        mongo_uri = os.getenv("MONGO_URI", "mongodb://mongo:27018/")
         self.client = MongoClient(mongo_uri)
         self.db = self.client[database_name]
         self.collection = self.db[collection_name]
